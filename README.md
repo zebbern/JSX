@@ -1,8 +1,9 @@
 <div align="center">  
 
+
 <p>  
   
-  **_A Chrome extension that collects all JavaScript (`.js`) links from a webpage with a single click!_**  
+  **_A Chrome extension that collects all JavaScript (`.js`) links, form endpoints, and all other links from a webpage with a single click!_**  
 
   <kbd> Open An Issue For Any Questions :)</kbd>
 </p>  
@@ -21,11 +22,15 @@
 
 ## **` Features `**  
 
-- [x] Collects all JavaScript (`.js`) links from any webpage  
-- [x] Provides a "Copy All" button for quick copying  
-- [x] Works with both inline and external scripts  
-- [x] Simple, lightweight, and privacy-focused  
-- [x] No data collection or tracking  
+- [x] **Collects all JavaScript (`.js`) links** from any webpage  
+- [x] **Extracts form endpoints** (`<form action="...">`)  
+- [x] **Finds all possible links** from `href, src, data-src, action, poster, formaction`  
+- [x] **Filter results** in each section  
+- [x] **Copy All** button for quick copying  
+- [x] **Download All** as `.txt` (for endpoints/links) or `.zip` (for JS files)  
+- [x] **Works with both inline and external scripts**  
+- [x] **Simple, lightweight, and privacy-focused**  
+- [x] **No data collection or tracking**  
 
 ---
 
@@ -37,41 +42,42 @@
    ```bash
    # Clone the repository  
    git clone https://github.com/zebbern/JSX.git
-<br>
-<br>
-
-
-## `Setup`
-
-#### ⇨ Loading in Chrome
-
-1. Open Chrome and navigate to `chrome://extensions/`
-2. Enable "Developer mode" in the top right corner
-3. Click "Load unpacked"
-4. Select the directory containing the extension files:
-
-
-  
-5. Pin the extension (optional)
-
-#### ⇨ Verify Installation
-- Look for the JS icon in your Chrome toolbar
-- Right-click on any form field to see the "Javascript link finder" option
+   ```
+2. Follow the setup steps below.
 
 <br>
 <br>
 
+## **`Setup`**  
 
+#### ⇨ Loading in Chrome  
 
-## `Usage`
+1. Open Chrome and navigate to `chrome://extensions/`  
+2. Enable "Developer mode" in the top right corner  
+3. Click "Load unpacked"  
+4. Select the directory containing the extension files  
+5. **Pin the extension** (optional)  
 
-⇨ Collecting JavaScript Links
+#### ⇨ Verify Installation  
 
-- Click the Javascript Link Finder extension icon in the toolbar
+- Look for the **JSX icon** in your Chrome toolbar  
+- Click the extension to open the **popup window**  
 
+<br>
+<br>
 
+## **`Usage`**  
 
-- The extension will scan the current
- webpage and extract all .js links
+⇨ **Extracting JavaScript Links, Endpoints, and All Links**  
 
-- Click "Copy All" to copy all collected JavaScript links
+- Click the **JSX extension icon** in the toolbar  
+- The extension will scan the current webpage and automatically extract:  
+  - **JavaScript (`.js`) links**  
+  - **Form Endpoints (`<form action>` values)**  
+  - **All possible links (from `href`, `src`, `action`, etc.)**  
+
+⇨ **Features in Each Section**  
+
+- **Filter** results using the search input  
+- **Copy All** to quickly copy all collected items  
+- **Download All** as a `.txt` (for endpoints & links) or `.zip` (for JS files)  
