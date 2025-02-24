@@ -1,5 +1,7 @@
 <div align="center">  
 
+<img src="https://github.com/user-attachments/assets/56525f45-698e-42cf-94af-1113d7e4cd65" width="25%">
+
 
 <p>  
   
@@ -64,6 +66,9 @@
 - Click the extension to open the **popup window**  
 
 <br>
+
+<img src="https://github.com/user-attachments/assets/7954aed0-2ebc-43e2-baa2-6320a979e38b">
+
 <br>
 
 ## **`Usage`**  
