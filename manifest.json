@@ -1,0 +1,29 @@
+{
+    "manifest_version": 3,
+    "name": "JSX",
+    "version": "2.5",
+    "description": "Finds all JavaScript files, form endpoints, and links on the current webpage.",
+    "icons": {
+        "128": "/github-zebbern.png"
+      },
+    "permissions": [
+      "scripting",
+      "activeTab",
+      "clipboardWrite"
+    ],
+    "host_permissions": [
+      "<all_urls>"
+    ],
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": "github-zebbern.png"
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"],
+        "run_at": "document_end"
+      }
+    ]
+  }
+  

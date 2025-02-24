@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JSX - JavaScript Explorer</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Title -->
+    <h2 class="app-title">JSX - JavaScript Explorer</h2>
+
+    <!-- Tab Buttons -->
+    <div class="tabs">
+      <button class="tab-button active" data-target="js-section">JS Files</button>
+      <button class="tab-button" data-target="endpoints-section">Endpoints</button>
+      <button class="tab-button" data-target="all-links-section">All Links</button>
+    </div>
+
+    <!-- JS FILES SECTION -->
+    <div id="js-section" class="tab-content active">
+      <h3 class="section-title" id="jsCountTitle">Found (0) .js Files</h3>
+      <div class="input-group">
+        <input 
+          type="text" 
+          id="jsFilterInput" 
+          placeholder="Filter .js files..."
+          class="text-input"
+        />
+        <button id="jsFilterBtn" class="action-btn">Filter</button>
+      </div>
+      <ul id="jsList" class="file-list"></ul>
+      <div class="buttons-container">
+        <button id="copyJsBtn" class="action-btn">Copy All</button>
+        <button id="downloadJsBtn" class="action-btn">Download All</button>
+      </div>
+    </div>
+
+    <!-- ENDPOINTS SECTION -->
+    <div id="endpoints-section" class="tab-content">
+      <h3 class="section-title" id="endpointsCountTitle">Found (0) Endpoints</h3>
+      <div class="input-group">
+        <input 
+          type="text" 
+          id="endpointsFilterInput" 
+          placeholder="Filter endpoints..."
+          class="text-input"
+        />
+        <button id="endpointsFilterBtn" class="action-btn">Filter</button>
+      </div>
+      <ul id="endpointsList" class="file-list"></ul>
+      <div class="buttons-container">
+        <button id="copyEndpointsBtn" class="action-btn">Copy All</button>
+        <button id="downloadEndpointsBtn" class="action-btn">Download All</button>
+      </div>
+    </div>
+
+    <!-- ALL LINKS SECTION -->
+    <div id="all-links-section" class="tab-content">
+      <h3 class="section-title" id="allLinksCountTitle">Found (0) Links</h3>
+      <div class="input-group">
+        <input 
+          type="text" 
+          id="allLinksFilterInput" 
+          placeholder="Filter links..."
+          class="text-input"
+        />
+        <button id="allLinksFilterBtn" class="action-btn">Filter</button>
+      </div>
+      <ul id="allLinksList" class="file-list"></ul>
+      <div class="buttons-container">
+        <button id="copyAllLinksBtn" class="action-btn">Copy All</button>
+        <button id="downloadAllLinksBtn" class="action-btn">Download All</button>
+      </div>
+    </div>
+
+    <!-- Author Info -->
+    <p id="author">
+      Created by 
+      <a href="https://github.com/zebbern" target="_blank">zebbern</a>
+    </p>
+  </div>
+
+  <!-- Include JSZip to bundle JS files into a ZIP -->
+  <script src="jszip.min.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

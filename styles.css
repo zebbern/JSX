@@ -1,0 +1,160 @@
+/* Reset / base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body: gradient background for the popup */
+body {
+  width: 340px;
+  min-height: 420px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #5EE7DF 10%, #B490CA 100%);
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+/* Container with “card” style */
+.popup-container {
+  background-color: #fff;
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Title */
+.app-title {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #5b3970;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 15px;
+}
+
+.tab-button {
+  flex: 1;
+  background-color: #7c51a1;
+  color: #fff;
+  border: none;
+  padding: 8px;
+  margin: 0 3px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center;
+}
+
+.tab-button:hover {
+  background-color: #5b3970;
+}
+
+.tab-button.active {
+  background-color: #4a2f59;
+}
+
+/* Tab content */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Section titles */
+.section-title {
+  margin: 10px 0 8px 0;
+  color: #5b3970;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Input group */
+.input-group {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.text-input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Buttons */
+.action-btn {
+  background-color: #7c51a1;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.action-btn:hover {
+  background-color: #5b3970;
+}
+
+.buttons-container {
+  margin-top: 5px;
+  display: flex;
+  gap: 5px;
+  justify-content: flex-end;
+}
+
+/* List of files/links */
+.file-list {
+  max-height: 150px;
+  overflow-y: auto;
+  list-style: none;
+  border: 1px solid #d5d5d5;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.file-list li {
+  margin: 3px 0;
+  padding: 4px;
+  background-color: #f1f1f1;
+  border-radius: 3px;
+  word-wrap: break-word;
+  transition: background-color 0.2s ease;
+}
+
+.file-list li:hover {
+  background-color: #e3e3e3;
+}
+
+/* Author link */
+#author {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+#author a {
+  color: #7c51a1;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+#author a:hover {
+  text-decoration: underline;
+}
