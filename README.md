@@ -48,7 +48,6 @@
 2. Follow the setup steps below.
 
 <br>
-<br>
 
 ## **`Setup`**  
 
