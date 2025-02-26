@@ -325,4 +325,19 @@ document.addEventListener("DOMContentLoaded", () => {
   
     return Array.from(new Set(links));
   }
+
+  // Function to trigger button click when Enter is pressed
+function enableEnterKey(inputId, buttonId) {
+  document.getElementById(inputId).addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+          event.preventDefault(); // Prevent default form submission
+          document.getElementById(buttonId).click(); // Trigger button click
+      }
+  });
+}
+
+// Apply function to each input field and its corresponding button
+enableEnterKey("jsFilterInput", "jsFilterBtn");
+enableEnterKey("endpointsFilterInput", "endpointsFilterBtn");
+enableEnterKey("allLinksFilterInput", "allLinksFilterBtn");
   
