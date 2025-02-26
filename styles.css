@@ -1,37 +1,30 @@
-/* Reset / base */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* Body: gradient background for the popup */
+/* Body: dark background for the popup */
 body {
-  width: 340px;
-  min-height: 420px;
+  width: 380px;
+  min-height: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #5EE7DF 10%, #B490CA 100%);
-  color: #333;
+  background: #1e1e1e;
+  color: #ccc;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 20px;
+  padding: 6px;
 }
 
 /* Container with “card” style */
 .popup-container {
-  background-color: #fff;
+  background-color: #2b2b2b;
   width: 100%;
   padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  border-radius: 10px; /* This rounds the edges */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 /* Title */
 .app-title {
   text-align: center;
   margin-bottom: 15px;
-  color: #5b3970;
+  color: #f0f0f0;
   font-size: 1.2rem;
   font-weight: 600;
 }
@@ -45,7 +38,7 @@ body {
 
 .tab-button {
   flex: 1;
-  background-color: #7c51a1;
+  background-color: #555;
   color: #fff;
   border: none;
   padding: 8px;
@@ -58,11 +51,11 @@ body {
 }
 
 .tab-button:hover {
-  background-color: #5b3970;
+  background-color: #444;
 }
 
 .tab-button.active {
-  background-color: #4a2f59;
+  background-color: #333;
 }
 
 /* Tab content */
@@ -76,8 +69,8 @@ body {
 
 /* Section titles */
 .section-title {
-  margin: 10px 0 8px 0;
-  color: #5b3970;
+  margin: 8px 0 8px 0;
+  color: #ddd;
   font-weight: 600;
   font-size: 1rem;
 }
@@ -93,12 +86,14 @@ body {
   flex: 1;
   padding: 8px;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid #444;
+  background-color: #3b3b3b;
+  color: #ccc;
 }
 
 /* Buttons */
 .action-btn {
-  background-color: #7c51a1;
+  background-color: #555;
   color: #fff;
   border: none;
   padding: 8px 12px;
@@ -109,37 +104,44 @@ body {
 }
 
 .action-btn:hover {
-  background-color: #5b3970;
+  background-color: #444;
 }
 
 .buttons-container {
-  margin-top: 5px;
+  margin-top: 6px;
   display: flex;
   gap: 5px;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 /* List of files/links */
 .file-list {
-  max-height: 150px;
+  max-height: 300px;
   overflow-y: auto;
-  list-style: none;
-  border: 1px solid #d5d5d5;
+  /* Hide scrollbars */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+  border: 1px solid #444;
   border-radius: 4px;
   padding: 5px;
 }
 
+/* Hide scrollbar for WebKit browsers */
+.file-list::-webkit-scrollbar {
+  display: none;
+}
+
 .file-list li {
   margin: 3px 0;
-  padding: 4px;
-  background-color: #f1f1f1;
+  padding: 6px;
+  background-color: #3b3b3b;
   border-radius: 3px;
-  word-wrap: break-word;
+  word-break: break-all;
   transition: background-color 0.2s ease;
 }
 
 .file-list li:hover {
-  background-color: #e3e3e3;
+  background-color: #333;
 }
 
 /* Author link */
@@ -150,7 +152,7 @@ body {
 }
 
 #author a {
-  color: #7c51a1;
+  color: #88aaff;
   text-decoration: none;
   font-weight: 500;
 }
