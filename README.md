@@ -66,7 +66,7 @@
 
 <br>
 
-<img src="https://github.com/user-attachments/assets/1494dcf2-ed00-4915-8b06-adc8b1c506e3">
+<img src="https://github.com/user-attachments/assets/e340b933-477d-4148-9104-bd3133fe60b4">
 
 <br>
 
