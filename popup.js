@@ -111,43 +111,14 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   
-    // Download JS (ZIP)
-    document.getElementById("downloadJsBtn").addEventListener("click", async () => {
-      if (!jsFiles.length) return alert("No JS files to download!");
-      try {
-        await downloadAllJSFiles(jsFiles);
-        alert("JS Files ZIP download started.");
-      } catch (err) {
-        console.error("Download error:", err);
-        alert("Failed to download JS files.");
-      }
-    });
+
+        // Download Endpoints
+        document.getElementById("downloadJsBtn").addEventListener("click", () => {
+          if (!jsFiles.length) return alert("No jsFiles to download!");
+          downloadTextFile("jsFiles.txt", jsFiles.join("\n"));
+          alert("jsFiles download started.");
+        });
   
-    async function downloadAllJSFiles(files) {
-      const zip = new JSZip();
-      for (let url of files) {
-        try {
-          const resp = await fetch(url);
-          if (!resp.ok) throw new Error(`HTTP error ${resp.status}`);
-          const content = await resp.text();
-          // Attempt to get a filename from the URL
-          let filename = url.split("/").pop() || "file.js";
-          // Remove query params
-          filename = filename.split("?")[0] || "file.js";
-          zip.file(filename, content);
-        } catch (error) {
-          console.warn("Could not fetch:", url, error);
-        }
-      }
-      const blob = await zip.generateAsync({ type: "blob" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "js_files.zip";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(link.href);
-    }
   
     /* -----------------------------
      *   ENDPOINTS SECTION
@@ -325,6 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     return Array.from(new Set(links));
   }
+  
 
   // Function to trigger button click when Enter is pressed
 function enableEnterKey(inputId, buttonId) {
@@ -340,4 +312,3 @@ function enableEnterKey(inputId, buttonId) {
 enableEnterKey("jsFilterInput", "jsFilterBtn");
 enableEnterKey("endpointsFilterInput", "endpointsFilterBtn");
 enableEnterKey("allLinksFilterInput", "allLinksFilterBtn");
-  
