@@ -28,7 +28,7 @@ Your data **never leaves your device**. JSX only processes webpage content tempo
 
 ## Changes to This Policy
 We may update this policy from time to time. Any changes will be posted at:
-📌 **[https://github.com/zebbern/JSX/privacy-policy.md](https://github.com/zebbern/JSX/privacy-policy.md)**
+📌 **[https://github.com/zebbern/JSX/blob/main/privacy-policy.md](https://github.com/zebbern/JSX/blob/main/privacy-policy.md)**
 
 ## Contact
 If you have any questions about this Privacy Policy, feel free to contact us via:
