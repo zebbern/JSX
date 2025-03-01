@@ -1,6 +1,6 @@
 # Privacy Policy for JSX Chrome Extension
 
-_Last Updated: 27.feb.2025
+_Last Updated: 1.mars.2025
 
 ## Introduction
 Thank you for using **JSX - JavaScript Explorer** ("the Extension"). Your privacy is important to us. This Privacy Policy outlines how we handle data when you use the Extension.
@@ -28,7 +28,7 @@ Your data **never leaves your device**. JSX only processes webpage content tempo
 
 ## Changes to This Policy
 We may update this policy from time to time. Any changes will be posted at:
-📌 **[https://github.com/zebbern/JSX/blob/main/privacy-policy.md](https://github.com/zebbern/JSX/blob/main/privacy-policy.md)**
+📌 **[https://raw.githubusercontent.com/zebbern/JSX/main/privacy-policy.md](https://raw.githubusercontent.com/zebbern/JSX/main/privacy-policy.md)**
 
 ## Contact
 If you have any questions about this Privacy Policy, feel free to contact us via:
