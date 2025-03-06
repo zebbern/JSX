@@ -41,8 +41,7 @@
 #### ⇨ **Manual Installation**  
 
 1. **Download the Extension**  
-   ```bash
-   # Clone the repository  
+   ```
    git clone https://github.com/zebbern/JSX.git
    ```
 2. Follow the setup steps below.
