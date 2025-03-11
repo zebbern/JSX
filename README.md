@@ -38,6 +38,10 @@
 
 ## **`Installation`**  
 
+#### ⇨ **From Chrome Extention**  
+https://chromewebstore.google.com/detail/jsx-javascript-explorer/bgpcadogdkjlgohebmhdocbfdfmkikjd
+
+
 #### ⇨ **Manual Installation**  
 
 1. **Download the Extension**  
