@@ -1,7 +1,7 @@
 /* Body: dark background for the popup */
 body {
   width: 380px;
-  min-height: 20px;
+  min-height: 200px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: #1e1e1e;
   color: #ccc;
