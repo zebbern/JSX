@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Arrays to store the unfiltered data
+  // Arrays to store unfiltered data
   let jsFiles = [];
-  let endpoints = [];
+  let endpoints = [];  // Basic form endpoints loaded on extension open
   let allLinks = [];
 
   // -- TAB SWITCHING LOGIC --
@@ -17,16 +17,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // -- AUTO LOAD ALL THREE ON POPUP OPEN --
+  // -- AUTO LOAD ON POPUP OPEN --
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const tabId = tabs[0].id;
 
     // 1) JS Files
     chrome.scripting.executeScript(
-      {
-        target: { tabId },
-        function: findJavaScriptFiles
-      },
+      { target: { tabId }, function: findJavaScriptFiles },
       (results) => {
         if (results && results[0] && results[0].result) {
           jsFiles = results[0].result;
@@ -35,34 +32,55 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     );
 
-    // 2) Endpoints (includes snippet to discover paths in loaded .js or other resources)
+    // 2) Basic Endpoints
     chrome.scripting.executeScript(
-      {
-        target: { tabId },
-        function: findEndpoints
-      },
+      { target: { tabId }, function: findEndpointsBasic },
       (results) => {
         if (results && results[0] && results[0].result) {
           endpoints = results[0].result;
-          displayEndpoints(endpoints);
+          loadHiddenPathsFromSessionStorage(tabId);
         }
       }
     );
 
     // 3) All Links
     chrome.scripting.executeScript(
-      {
-        target: { tabId },
-        function: findAllLinks
-      },
+      { target: { tabId }, function: findAllLinks },
       (results) => {
         if (results && results[0] && results[0].result) {
           allLinks = results[0].result;
           displayAllLinks(allLinks);
+          // MERGE any .js links from All Links into JS Files
+          mergeJSFromAllLinks();
         }
       }
     );
   });
+
+  // Merge .js from All Links into the JS files array
+  function mergeJSFromAllLinks() {
+    const jsFromAll = allLinks.filter(link => link.toLowerCase().endsWith(".js"));
+    const merged = [...new Set([...jsFiles, ...jsFromAll])];
+    jsFiles = merged;
+    displayJSFiles(jsFiles);
+  }
+
+  // Load ephemeral hidden endpoints from sessionStorage
+  function loadHiddenPathsFromSessionStorage(tabId) {
+    chrome.scripting.executeScript(
+      { target: { tabId }, function: getSessionRevealedPaths },
+      (res) => {
+        if (res && res[0] && Array.isArray(res[0].result)) {
+          const stored = res[0].result;
+          let merged = endpoints.concat(stored);
+          merged = [...new Set(merged)];
+          endpoints = merged;
+        }
+        // Now show final endpoints in the popup
+        displayEndpoints(endpoints);
+      }
+    );
+  }
 
   /* -----------------------------
    *   JS FILES SECTION
@@ -181,6 +199,48 @@ document.addEventListener("DOMContentLoaded", () => {
     alert("Endpoints download started.");
   });
 
+  // REVEAL HIDDEN with spinner
+  document.getElementById("revealHiddenBtn").addEventListener("click", () => {
+    showEndpointsSpinner();
+
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const tabId = tabs[0].id;
+      chrome.scripting.executeScript({
+        target: { tabId },
+        function: revealHiddenStuff
+      }, (injectionResults) => {
+        hideEndpointsSpinner();
+
+        if (injectionResults && injectionResults[0] && injectionResults[0].result) {
+          const newPaths = injectionResults[0].result;
+          let merged = endpoints.concat(newPaths);
+          merged = [...new Set(merged)];
+          endpoints = merged;
+
+          // store in session storage
+          chrome.scripting.executeScript({
+            target: { tabId },
+            function: storeInSessionStorage,
+            args: [ newPaths ]
+          });
+
+          displayEndpoints(endpoints);
+        }
+      });
+    });
+  });
+
+  function showEndpointsSpinner() {
+    const list = document.getElementById("endpointsList");
+    list.innerHTML = "";
+    const spinnerDiv = document.createElement("div");
+    spinnerDiv.classList.add("spinner");
+    list.appendChild(spinnerDiv);
+  }
+  function hideEndpointsSpinner() {
+    document.getElementById("endpointsList").innerHTML = "";
+  }
+
   /* -----------------------------
    *   ALL LINKS SECTION
    * ----------------------------- */
@@ -235,113 +295,83 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.removeChild(link);
     URL.revokeObjectURL(link.href);
   }
+
+  /* -----------------------------
+   *  MASS OPEN SECTION (NEW)
+   * ----------------------------- */
+  const massOpenTextarea = document.getElementById("massOpenTextarea");
+  const findInput = document.getElementById("findText");
+  const replaceInput = document.getElementById("replaceText");
+  const replaceAllBtn = document.getElementById("replaceAllBtn");
+  const openAllBtn = document.getElementById("openAllBtn");
+
+  // Replace all occurrences of findText with replaceText in the textarea
+  replaceAllBtn.addEventListener("click", () => {
+    const findStr = findInput.value;
+    if (!findStr) {
+      alert("Please enter the text to find.");
+      return;
+    }
+    const replaceStr = replaceInput.value;
+    const original = massOpenTextarea.value;
+    // Use a global regex for all occurrences
+    // Make sure to escape special regex chars in findStr if needed
+    const escapedFind = findStr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(escapedFind, 'g');
+    const replaced = original.replace(re, replaceStr);
+
+    massOpenTextarea.value = replaced;
+  });
+
+  // Open all lines in new tabs
+  openAllBtn.addEventListener("click", () => {
+    const lines = massOpenTextarea.value.split("\n").map(l => l.trim()).filter(Boolean);
+    if (!lines.length) {
+      alert("No URLs to open.");
+      return;
+    }
+
+    lines.forEach(url => {
+      // Attempt to ensure it has a protocol; if missing, prefix with https://
+      if (!/^https?:\/\//i.test(url)) {
+        url = "https://" + url;
+      }
+      chrome.tabs.create({ url });
+    });
+  });
 });
 
 /* 
   =============== 
-  INJECTED METHODS 
+  INJECTED METHODS (unchanged)
   ===============
 */
 
 /**
- * Collects all JS script URLs from the page.
+ * Basic <form action="..."> endpoints
+ */
+function findEndpointsBasic() {
+  const forms = [...document.querySelectorAll("form[action]")];
+  const actions = forms.map(f => f.action).filter(Boolean);
+  return [...new Set(actions)];
+}
+
+/**
+ * Collects all JS script URLs from the page
  */
 function findJavaScriptFiles() {
   const jsLinks = new Set();
-  // 1) <script src="...">
   document.querySelectorAll("script[src]").forEach(script => jsLinks.add(script.src));
-  // 2) Performance API
   performance.getEntriesByType("resource").forEach(entry => {
     if (entry.name.endsWith(".js")) {
       jsLinks.add(entry.name);
     }
   });
-  // 3) Inline scripts with .js in the text
   document.querySelectorAll("script:not([src])").forEach(script => {
     const matches = script.innerHTML.match(/https?:\/\/[^"'\s]+\.js/g);
-    if (matches) {
-      matches.forEach(url => jsLinks.add(url));
-    }
+    if (matches) matches.forEach(url => jsLinks.add(url));
   });
   return Array.from(jsLinks);
-}
-
-/**
- * Collects form endpoints + discovered paths from loaded resources.
- * Returns a promise so we can await network fetches.
- */
-async function findEndpoints() {
-  // (A) Original form actions
-  const formEndpoints = [
-    ...document.querySelectorAll("form[action]")
-  ]
-    .map(f => f.action)
-    .filter(Boolean);
-
-  // (B) Discovered paths from the snippet
-  const discoveredPaths = [];
-  const visitedURLs = new Set();
-
-  function isLikelyPath(str) {
-    return (
-      (str.startsWith("/") || str.startsWith("./") || str.startsWith("../")) &&
-      !str.includes(" ") &&
-      !/[^\x20-\x7E]/.test(str) &&
-      str.length > 1 &&
-      str.length < 200
-    );
-  }
-
-  function extractPathsFromContent(content) {
-    // Finds strings like '/api/endpoint' or './some/thing', etc
-    // Single or double quotes, relative or absolute paths
-    // We'll assume the user wants them if they appear in the text
-    return [...content.matchAll(/['"]((?:\/|\.\.?\/)[^'"]+)['"]/g)]
-      .map(m => m[1])
-      .filter(isLikelyPath);
-  }
-
-  function toAbsolutePath(base, relativePath) {
-    try {
-      return new URL(relativePath, base).href;
-    } catch {
-      return relativePath;
-    }
-  }
-
-  async function fetchResource(url) {
-    try {
-      const response = await fetch(url, {
-        mode: "no-cors",
-        credentials: "include"
-      });
-      return response.ok ? await response.text() : null;
-    } catch {
-      return null; // If blocked by CORS or any fetch error
-    }
-  }
-
-  async function processResource(url) {
-    if (visitedURLs.has(url)) return;
-    visitedURLs.add(url);
-    const content = await fetchResource(url);
-    if (content) {
-      const paths = extractPathsFromContent(content);
-      for (let p of paths) {
-        discoveredPaths.push(toAbsolutePath(url, p));
-      }
-    }
-  }
-
-  // Gather all resource URLs from the Performance API, including cross-domain
-  const resourceURLs = performance.getEntriesByType("resource").map(r => r.name);
-  await Promise.all(resourceURLs.map(processResource));
-
-  // Combine, deduplicate
-  const combined = [...formEndpoints, ...discoveredPaths];
-  const unique = [...new Set(combined)];
-
-  return unique;
 }
 
 /**
@@ -349,7 +379,7 @@ async function findEndpoints() {
  * removing duplicates.
  */
 function findAllLinks() {
-  const links = [
+  const raw = [
     ...document.querySelectorAll("[href],[src],[data-src],[action],[poster],[formaction]")
   ]
     .map(el => (
@@ -362,8 +392,111 @@ function findAllLinks() {
     ))
     .filter(Boolean);
 
-  return Array.from(new Set(links));
+  return [...new Set(raw)];
 }
+
+/**
+ * Hidden paths snippet logic
+ */
+function revealHiddenStuff() {
+  return (async function(){
+    let e = [],
+        t = new Set();
+
+    async function fetchResource(url) {
+      try {
+        const resp = await fetch(url);
+        if (!resp.ok) {
+          console.error(`Failed to fetch ${url}: ${resp.status}`);
+          return null;
+        }
+        return await resp.text();
+      } catch (err) {
+        console.error(`Error fetching ${url}:`, err);
+        return null;
+      }
+    }
+
+    function isLikelyPath(str) {
+      return (
+        (str.startsWith("/") || str.startsWith("./") || str.startsWith("../")) &&
+        !str.includes(" ") &&
+        !/[^\x20-\x7E]/.test(str) &&
+        str.length > 1 &&
+        str.length < 200
+      );
+    }
+
+    function extractPaths(content) {
+      return [...content.matchAll(/[%27"]((?:\/|\.\.?\/|\.\/)[^%27"]+)[%27"]/g)]
+        .map(match => match[1])
+        .filter(isLikelyPath);
+    }
+
+    function toAbsolute(base, rel) {
+      try {
+        return new URL(rel, base).href;
+      } catch {
+        try {
+          return new URL(rel, document.location.href).href;
+        } catch {
+          return rel;
+        }
+      }
+    }
+
+    async function processResource(resourceURL) {
+      if (t.has(resourceURL)) return;
+      t.add(resourceURL);
+      console.log(`Fetching and processing: ${resourceURL}`);
+      const txt = await fetchResource(resourceURL);
+      if (txt) {
+        const found = extractPaths(txt);
+        found.forEach(r => e.push(toAbsolute(resourceURL, r)));
+      }
+    }
+
+    const resources = performance.getEntriesByType("resource").map(r => r.name);
+    console.log("Resources found:", resources);
+
+    for (const r of resources) {
+      await processResource(r);
+    }
+
+    const i = [...new Set(e)];
+    console.log("Final list of unique FULL paths:", i);
+    console.log("All scanned resources:", Array.from(t));
+
+    return i; 
+  })();
+}
+
+/**
+ * sessionStorage ephemeral logic
+ */
+function getSessionRevealedPaths() {
+  const raw = sessionStorage.getItem("myExtensionHidden");
+  if (!raw) return [];
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return [];
+  }
+}
+
+function storeInSessionStorage(newPaths) {
+  let existing = [];
+  const raw = sessionStorage.getItem("myExtensionHidden");
+  if (raw) {
+    try {
+      existing = JSON.parse(raw);
+    } catch {}
+  }
+  const merged = [...new Set([...existing, ...newPaths])];
+  sessionStorage.setItem("myExtensionHidden", JSON.stringify(merged));
+  return merged;
+}
+
 
   // Function to trigger button click when Enter is pressed
   function enableEnterKey(inputId, buttonId) {
