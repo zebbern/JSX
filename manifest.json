@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "JSX",
-    "version": "2.5",
+    "name": "JSX - JavaScript Explorer",
+    "version": "0.6.0",
     "description": "Finds all JavaScript files, form endpoints, and links on the current webpage.",
     "icons": {
         "128": "/github-zebbern.png"
@@ -21,6 +21,7 @@
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
+        "exclude_matches": ["https://chrome.google.com/webstore/*"],
         "js": ["content.js"],
         "run_at": "document_end"
       }
