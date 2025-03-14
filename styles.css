@@ -1,6 +1,6 @@
 /* Body: dark background for the popup */
 body {
-  width: 380px;
+  width: 450px;
   min-height: 200px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: #1e1e1e;
@@ -14,7 +14,7 @@ body {
 /* Container with “card” style */
 .popup-container {
   background-color: #2b2b2b;
-  width: 100%;
+  width: 90%;
   padding: 15px;
   border-radius: 10px; /* This rounds the edges */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -161,4 +161,40 @@ body {
 
 #author a:hover {
   text-decoration: underline;
+}
+
+.spinner {
+  margin: 10px auto;
+  border: 6px solid #666;    /* outer color */
+  border-top: 6px solid #bbb; /* "moving" color */
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Mass Open: big multiline input with hidden scrollbar */
+.massopen-textarea {
+  width: 400px;
+  min-height: 315px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #1e1e1e;
+  color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 5px 0;
+  /* Hide scrollbar (like .file-list) */
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.massopen-textarea::-webkit-scrollbar {
+  display: none;
 }
