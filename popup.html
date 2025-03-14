@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title></title>
+  <title>JSX - JavaScript Explorer</title>
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
@@ -16,6 +16,7 @@
       <button class="tab-button active" data-target="js-section">JS Files</button>
       <button class="tab-button" data-target="endpoints-section">Endpoints</button>
       <button class="tab-button" data-target="all-links-section">All Links</button>
+      <button class="tab-button" data-target="mass-open-section">Mass Open</button> 
     </div>
 
     <!-- JS FILES SECTION -->
@@ -50,9 +51,11 @@
         <button id="endpointsFilterBtn" class="action-btn">Filter</button>
       </div>
       <ul id="endpointsList" class="file-list"></ul>
+
       <div class="buttons-container">
         <button id="copyEndpointsBtn" class="action-btn">Copy All</button>
         <button id="downloadEndpointsBtn" class="action-btn">Download All</button>
+        <button id="revealHiddenBtn" class="action-btn">Reveal Hidden</button>
       </div>
     </div>
 
@@ -75,12 +78,49 @@
       </div>
     </div>
 
+    <!-- MASS OPEN SECTION -->
+    <div id="mass-open-section" class="tab-content">
+      <h3 class="section-title">Mass Open Urls</h3>
+
+      <!-- Textarea with matching dark theme & hidden scrollbars -->
+      <textarea 
+        id="massOpenTextarea" 
+        class="massopen-textarea" 
+        placeholder="Enter URLs, one per line..."
+      ></textarea>
+
+      <!-- Find & Replace Input Fields + Button -->
+      <div class="input-group">
+        <input 
+          type="text" 
+          id="findText" 
+          placeholder="Find..." 
+          class="text-input"
+        />
+        <input 
+          type="text" 
+          id="replaceText" 
+          placeholder="Replace with..." 
+          class="text-input"
+        />
+      </div>
+
+      <!-- Button to open all URLs -->
+      <div class="buttons-container">
+        <button id="replaceAllBtn" class="action-btn">Replace All</button>
+        <button id="openAllBtn" class="action-btn">Open All</button>
+      </div>
+    </div>
+    <!-- END MASS OPEN SECTION -->
+
     <!-- Author Info -->
     <p id="author">
       Created by 
       <a href="https://github.com/zebbern" target="_blank">zebbern</a>
     </p>
   </div>
+
+
 
   <!-- Include JSZip to bundle JS files into a ZIP -->
   <script src="jszip.min.js"></script>
